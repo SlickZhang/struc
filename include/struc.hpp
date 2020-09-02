@@ -20,7 +20,7 @@
 #pragma once
 
 #include <atomic>
-#include <boost/endian/arithmetic.hpp>
+#include <boost/endian/conversion.hpp>
 #include <cmath>
 #include <cstring>
 #include <sstream>

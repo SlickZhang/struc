@@ -21,7 +21,7 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
 project(struc CXX)
 
-find_package(Boost 1.58 REQUIRED)
+find_package(Boost 1.67 REQUIRED)
 add_library(struc INTERFACE)
 target_include_directories(struc INTERFACE include ${Boost_INCLUDE_DIRS})
 target_link_libraries(struc INTERFACE m)
