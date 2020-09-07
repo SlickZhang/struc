@@ -38,7 +38,12 @@ include(cmake/Boost.cmake)
 
 find_package(Boost 1.67)
 add_library(struc INTERFACE)
-target_include_directories(struc INTERFACE include ${Boost_INCLUDE_DIRS})
+
+target_include_directories(struc INTERFACE include)
+if (Boost_FOUND)
+  target_include_directories(struc INTERFACE ${Boost_INCLUDE_DIRS})
+endif()
+
 target_link_libraries(struc INTERFACE m ${Boost_LIBRARIES})
 
 install(FILES include/struc.hpp DESTINATION include)
@@ -46,6 +51,6 @@ install(FILES include/struc.hpp DESTINATION include)
 option(STRUC_BUILD_TESTS "Build tests" OFF)
 
 if(STRUC_BUILD_TESTS)
-    enable_testing()
-    add_subdirectory(test)
+  enable_testing()
+  add_subdirectory(test)
 endif()
