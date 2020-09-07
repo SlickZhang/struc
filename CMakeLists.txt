@@ -32,18 +32,10 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   )
 endif()
 
-# ---- Add dependencies via CPM ----
-include(cmake/CPM.cmake)
-include(cmake/Boost.cmake)
-
-find_package(Boost 1.67)
+find_package(Boost 1.67 REQUIRED)
 add_library(struc INTERFACE)
 
-target_include_directories(struc INTERFACE include)
-if (Boost_FOUND)
-  target_include_directories(struc INTERFACE ${Boost_INCLUDE_DIRS})
-endif()
-
+target_include_directories(struc INTERFACE include ${Boost_INCLUDE_DIRS})
 target_link_libraries(struc INTERFACE m ${Boost_LIBRARIES})
 
 install(FILES include/struc.hpp DESTINATION include)
