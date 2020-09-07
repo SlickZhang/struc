@@ -19,12 +19,28 @@
 
 cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
-project(struc CXX)
+project(
+  struc
+  VERSION 1.0
+  LANGUAGES CXX
+)
 
-find_package(Boost 1.67 REQUIRED)
+if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
+  message(
+    FATAL_ERROR
+      "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there."
+  )
+endif()
+
+# ---- Add dependencies via CPM ----
+include(cmake/CPM.cmake)
+include(cmake/Boost.cmake)
+
+find_package(Boost 1.67)
 add_library(struc INTERFACE)
 target_include_directories(struc INTERFACE include ${Boost_INCLUDE_DIRS})
-target_link_libraries(struc INTERFACE m)
+target_link_libraries(struc INTERFACE m ${Boost_LIBRARIES})
+
 install(FILES include/struc.hpp DESTINATION include)
 
 option(STRUC_BUILD_TESTS "Build tests" OFF)
