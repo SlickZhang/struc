@@ -35,7 +35,9 @@ endif()
 find_package(Boost 1.67 REQUIRED)
 add_library(struc INTERFACE)
 
-target_include_directories(struc INTERFACE include ${Boost_INCLUDE_DIRS})
+target_include_directories(struc INTERFACE
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>)
 target_link_libraries(struc INTERFACE m ${Boost_LIBRARIES})
 
 install(FILES include/struc.hpp DESTINATION include)
