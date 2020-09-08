@@ -38,7 +38,12 @@ add_library(struc INTERFACE)
 target_include_directories(struc INTERFACE
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
   $<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>)
-target_link_libraries(struc INTERFACE m ${Boost_LIBRARIES})
+
+target_link_libraries(struc INTERFACE ${Boost_LIBRARIES})
+
+IF (NOT WIN32)
+  target_link_libraries(struc INTERFACE m)
+ENDIF()
 
 install(FILES include/struc.hpp DESTINATION include)
 
