@@ -19,6 +19,7 @@
 
 #pragma once
 
+#include <algorithm>
 #include <atomic>
 #include <boost/endian/conversion.hpp>
 #include <cmath>
@@ -1072,7 +1073,7 @@ inline size_t struc::pack_helper(std::pair<size_t, size_t>& pos,
    {
       pack_scalar(c, cur, buffer, offset, t);
       auto alignment = c == native ? native_alignment(cur.second) : 0;
-      pos.second = std::max(pos.second, alignment);
+      pos.second = (std::max)(pos.second, alignment);
       return 1;
    }
    cur.first = 1;
@@ -1118,12 +1119,12 @@ inline size_t struc::pack_helper(std::pair<size_t, size_t>& pos,
       {
          pack_scalar(c, cur, buffer, offset, t);
          auto alignment = c == native ? native_alignment(cur.second) : 0;
-         pos.second = std::max(pos.second, alignment);
+         pos.second = (std::max)(pos.second, alignment);
       }
       else if (c == native)
       {
          offset += native_padding(offset, cur.second);
-         pos.second = std::max(pos.second, native_alignment(cur.second));
+         pos.second = (std::max)(pos.second, native_alignment(cur.second));
          continue;
       }
       return 1;
@@ -1675,7 +1676,7 @@ inline size_t struc::unpack_helper(std::pair<size_t, size_t>& pos,
    {
       unpack_scalar(c, cur, buffer, offset, t);
       auto alignment = c == native ? native_alignment(cur.second) : 0;
-      pos.second = std::max(pos.second, alignment);
+      pos.second = (std::max)(pos.second, alignment);
       return 1;
    }
    cur.first = 1;
@@ -1721,12 +1722,12 @@ inline size_t struc::unpack_helper(std::pair<size_t, size_t>& pos,
       {
          unpack_scalar(c, cur, buffer, offset, t);
          auto alignment = c == native ? native_alignment(cur.second) : 0;
-         pos.second = std::max(pos.second, alignment);
+         pos.second = (std::max)(pos.second, alignment);
       }
       else if (c == native)
       {
          offset += native_padding(offset, cur.second);
-         pos.second = std::max(pos.second, native_alignment(cur.second));
+         pos.second = (std::max)(pos.second, native_alignment(cur.second));
          continue;
       }
       return 1;
@@ -1961,7 +1962,7 @@ inline size_t struc::calcsize_helper(std::pair<size_t, size_t>& pos,
          no_of_items += num;
       }
       auto alignment = c == native ? native_alignment(type) : 0;
-      pos.second = std::max(pos.second, alignment);
+      pos.second = (std::max)(pos.second, alignment);
    }
    return size;
 }
