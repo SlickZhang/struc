@@ -1,6 +1,6 @@
 # struc 
 
-struc is a C++11 implementation of python's struct module. It depends only of the Boost.Endian header only library and the math library.
+struc is a C++11 implementation of python's struct module. It depends the math library.
 
 ## Usage
 
