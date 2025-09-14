@@ -21,7 +21,6 @@
 
 #include <algorithm>
 #include <atomic>
-#include <boost/endian/conversion.hpp>
 #include <cmath>
 #include <cstring>
 #include <sstream>
@@ -30,6 +29,56 @@
 #include <tuple>
 #include <type_traits>
 #include <vector>
+
+namespace endian {
+    inline bool is_little_endian() {
+        static const uint16_t test = 0x0102;
+        return *reinterpret_cast<const uint8_t*>(&test) == 0x02;
+    }
+
+    template <typename T>
+    T byte_swap(T value) {
+        static_assert(std::is_integral<T>::value, "Type must be integral");
+        union {
+            T value;
+            uint8_t bytes[sizeof(T)];
+        } src, dst;
+
+        src.value = value;
+        for (size_t i = 0; i < sizeof(T); i++) {
+            dst.bytes[i] = src.bytes[sizeof(T) - i - 1];
+        }
+        return dst.value;
+    }
+
+    template <typename T>
+    void little_to_native_inplace(T& value) {
+        if (!is_little_endian()) {
+            value = byte_swap(value);
+        }
+    }
+
+    template <typename T>
+    void big_to_native_inplace(T& value) {
+        if (is_little_endian()) {
+            value = byte_swap(value);
+        }
+    }
+
+    template <typename T>
+    void native_to_little_inplace(T& value) {
+        if (!is_little_endian()) {
+            value = byte_swap(value);
+        }
+    }
+
+    template <typename T>
+    void native_to_big_inplace(T& value) {
+        if (is_little_endian()) {
+            value = byte_swap(value);
+        }
+    }
+}
 
 //! @brief Class mimicing python's pack module
 class struc
@@ -390,11 +439,11 @@ inline typename std::enable_if<std::is_integral<I>::value, void>::type
 {
    if (c == litte_endian)
    {
-      boost::endian::native_to_little_inplace(i);
+      endian::native_to_little_inplace(i);
    }
    else
    {
-      boost::endian::native_to_big_inplace(i);
+      endian::native_to_big_inplace(i);
    }
 }
 
@@ -412,11 +461,11 @@ inline typename std::enable_if<std::is_integral<I>::value, void>::type
 {
    if (c == litte_endian)
    {
-      boost::endian::little_to_native_inplace(i);
+      endian::little_to_native_inplace(i);
    }
    else
    {
-      boost::endian::big_to_native_inplace(i);
+      endian::big_to_native_inplace(i);
    }
 }
 
